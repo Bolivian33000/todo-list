@@ -3,7 +3,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  color: #202124;
+  color: #051132;
 }
 
 h1,
@@ -11,7 +11,8 @@ h2,
 h3,
 input,
 button {
-  font-family: 'Press Start 2P', system-ui;
+  font-family: "Jost", sans-serif;
+
 }
 
 #root {
@@ -19,8 +20,8 @@ button {
   display: flex;
   flex-direction: column;
   padding: 14px;
-  background: #eff6ff;
-  gap: 14px;
+  background: #202124;
+  gap: 14px; 
 }
 
 header {
@@ -81,6 +82,15 @@ p {
   background: white;
 }
 
+.todoItem.urgent {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  border-radius: 14px;
+  background: orange;
+}
+
 .todoItem p {
   flex: 1;
 }
@@ -116,3 +126,8 @@ p {
   }
 }
 
+/* instead of deleting the todolist when done, make a button that says "completed" */
+
+
+
+/* I could add a button that toggles between good 
