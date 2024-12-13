@@ -13,7 +13,7 @@ This component is responsible for rendering the entire list of to-do items.
 */}
 
 export default function TodoList(props) {
-  const { todos, urgentTodos = [] } = props; 
+  const { todos, urgentTodos } = props; 
   // Destructure `todos` from props:
   // - `todos`: An array of to-do items passed from the App component.
 
