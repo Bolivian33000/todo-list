@@ -6,9 +6,6 @@ import TodoCard from './TodoCard.jsx';
 {/* 
 This component is responsible for rendering the entire list of to-do items.
 - It receives the `todos` array and other attributes (like `handleDeleteTodo`) as props from the parent component (App).
-
-
-// so certain information is received as props from the parent component (App)
 - It maps over the `todos` array to render a `TodoCard` component for each to-do item.
 */}
 
@@ -20,14 +17,14 @@ export default function TodoList(props) {
   return (
     <ul className="main">
       {todos.map((todo, todoIndex) => {
+          console.log(todo);
+
         // For each `todo` in the array, render a `TodoCard` component.
         // Spread the `props` to pass all attributes down to `TodoCard` (e.g., `handleDeleteTodo`).
-        
-        // TodoCard is a child of TodoList, not App. This is why there is no TodoCard tag in the App.jsx component
-        
         return (
+
           <TodoCard 
-            {...props}          // Pass all props down to TodoCard.
+                {...props}      // Pass all props down to TodoCard.
             key={todoIndex}      // React requires a unique key for each list item.
             index={todoIndex}    // Pass the index as a prop for delete functionality.
             isUrgent={urgentTodos.includes(todoIndex)}
@@ -63,4 +60,3 @@ Key Concepts:
 6. **`className`**:
    - The unordered list (`<ul>`) is assigned a class of "main". In React, `className` is used instead of `class` for styling.
 */}
-
