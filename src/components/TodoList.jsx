@@ -13,11 +13,12 @@ export default function TodoList(props) {
   const { todos, urgentTodos } = props; 
   // Destructure `todos` from props:
   // - `todos`: An array of to-do items passed from the App component.
+  console.log(todos);
+  console.log(urgentTodos); // console logs to check if 
 
   return (
     <ul className="main">
-      {todos.map((todo, todoIndex) => {
-          console.log(todo);
+      {todos.map((todo, todoIndex) => { // maps todo value (the object itself) and the todoIndex to each todo
 
         // For each `todo` in the array, render a `TodoCard` component.
         // Spread the `props` to pass all attributes down to `TodoCard` (e.g., `handleDeleteTodo`).
@@ -27,9 +28,9 @@ export default function TodoList(props) {
                 {...props}      // Pass all props down to TodoCard.
             key={todoIndex}      // React requires a unique key for each list item.
             index={todoIndex}    // Pass the index as a prop for delete functionality.
-            isUrgent={urgentTodos.includes(todoIndex)}
-          >
-            <p>{todo}</p>         {/* Render the todo text as a child inside TodoCard. */}
+            isUrgent={urgentTodos.some((urgentTodo) => urgentTodo.id === todo.id)} // checks if the id of the current todo exists in the urgentTodos array
+            >
+            <p>{todo.content}</p>         {/* Render the todo text as a child inside TodoCard. */}
           </TodoCard>
         );
       })}

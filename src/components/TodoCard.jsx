@@ -22,9 +22,9 @@ export default function TodoCard(props) {
 
       <div className="actionsContainer">
         {/* Edit Button */}
-        <button onClick = {() => { 
+        <button onClick = {() =>  
             handleEditTodo(index)
-        }}>
+        }>
           <i className="fa-solid fa-pen-to-square"></i> {/* FontAwesome edit icon */}
         </button>
 

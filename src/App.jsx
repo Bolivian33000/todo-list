@@ -24,38 +24,64 @@ function App() {
   }
 
   // Function: Adds a new to-do item.
-  function handleAddTodos(newTodo) {    
+  function handleAddTodos(newTodoContent) {   
+    const newTodo = { id: Date.now(), content: newTodoContent }; // new object with unique ID based on time since Unix Epoch (Jan. 1, 1970)
     const newTodoList = [...todos, newTodo]; // Creates a new list with the new todo appended.
     persistData(newTodoList); // Saves the updated list to localStorage.
-    setTodos(newTodoList); // Updates the `todos` state.
+    setTodos(newTodoList); // Updates the todos state.
   }
 
-  // Function: Deletes a to-do item by its index.
+
+  // first should have index be the input, and then check for matching id attributes within each object in the 
+  // todos array
+
+
   function handleDeleteTodo(index) { 
-    const newTodoList = todos.filter((_, todoIndex) => todoIndex !== index); // Filters out the to-do with the specified index.
-    persistData(newTodoList); // Saves the updated list to localStorage.
-    setTodos(newTodoList); // Updates the `todos` state.
+    // handle delete todo by the id
+    const deleteTodo = todos[index]  // stores the object at the given index in todos that we want to delete
+    const newTodoList = todos.filter((todo) => todo.id !== deleteTodo.id); // filters such that todos without the current deleteTodo id are included (deleteTodo object is deleted)
+    persistData(newTodoList); // Saves the updated list to local storage.
+    setTodos(newTodoList); // Updates the todos state.
+
+    // delete the id from the urgentTodosList as well
+    const newUrgentTodoList = urgentTodos.filter((urgentTodo) => urgentTodo.id !== deleteTodo.id)
+    setUrgentTodos(newUrgentTodoList)
   }
 
-  // Function: Edits a to-do item.
+
+
+    // Function: Edits a to-do item.
   function handleEditTodo(index) {
-    const valueToBeEdited = todos[index]; // Gets the value of the to-do being edited.
-    setTodoValue(valueToBeEdited); // Sets `todoValue` to the value being edited.
+    // handle edit todo by the id
+    const editTodo = todos[index] // stores the object at the given index in todos that we want to edit
+    const valueToBeEdited = todos.find((todo) => todo.id === editTodo.id) // matches clicked todo to the existing todo with that id
+    // console.log(valueToBeEdited.content)
+    // console.log(valueToBeEdited.id)
+
+    // if (!valueToBeEdited) return;
+
+    setTodoValue(valueToBeEdited.content); // Sets the input field to the value to be edited.
     handleDeleteTodo(index); // Removes the current to-do so it can be edited and re-added.
   }
 
+
+
   function handleUrgentTodo(index) {
-    if (urgentTodos.includes(index)) {
-      const newUrgentTodoList = urgentTodos.filter(urgentIndex => urgentIndex != index);
-      setUrgentTodos(newUrgentTodoList)
-
-    } else {
-
-      setUrgentTodos([...urgentTodos, index]);
+    const todoToToggle = todos[index]; 
+    // if the urgentTodo to toggle exists, then filter the urgent todos list to have each urgent Todo not equal to this current todo
+    if (urgentTodos.some((urgentTodo) => urgentTodo.id === todoToToggle.id)) {
+        const newUrgentTodosList = urgentTodos.filter((urgentTodo) => urgentTodo.id !== todoToToggle.id);
+        setUrgentTodos(newUrgentTodosList); 
+        console.log(urgentTodos)
+      } else {
+        setUrgentTodos([...urgentTodos, todoToToggle]); 
+      }
     }
 
+  
+ // I found that both my edit todo and handle urgent todo buttons are not functioning properly. The add todo button is properly
+ // populating the todos array
 
-  }
   // `useEffect`: Loads todos from localStorage on page load (empty dependency array).
   useEffect(() => {
     if (!localStorage) return; // If localStorage is unavailable, exit early.
@@ -110,3 +136,8 @@ export default App;
 
 
 // Learned something new: If switching between using objects or arrays as children in components, be sure to clear cached data (e.g., localStorage) to prevent data mismatches and rendering errors.
+
+
+
+
+// next step -- I must make sure that the urgentTodos are stored to local storage so that the array is not cleared once refreshed

@@ -83,11 +83,7 @@ p {
 }
 
 .todoItem.urgent {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px;
-  border-radius: 14px;
+
   background: orange;
 }
 
