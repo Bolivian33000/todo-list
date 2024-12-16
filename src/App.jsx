@@ -18,16 +18,21 @@ function App() {
 
 
 
-  // Function: Saves the current list of todos to localStorage.
-  function persistData(newList) {
+  // saves the current list of todos to localStorage.
+  function persistTodoData(newList) {
     localStorage.setItem('todos', JSON.stringify({ todos: newList }));
+  }
+
+  // saves the current list of urgentTodos to localStorage.
+  function persistUrgentTodoData(newList) {
+    localStorage.setItem('urgentTodos', JSON.stringify({ urgentTodos: newList }));
   }
 
   // Function: Adds a new to-do item.
   function handleAddTodos(newTodoContent) {   
     const newTodo = { id: Date.now(), content: newTodoContent }; // new object with unique ID based on time since Unix Epoch (Jan. 1, 1970)
     const newTodoList = [...todos, newTodo]; // Creates a new list with the new todo appended.
-    persistData(newTodoList); // Saves the updated list to localStorage.
+    persistTodoData(newTodoList); // Saves the updated list to localStorage.
     setTodos(newTodoList); // Updates the todos state.
   }
 
@@ -40,7 +45,7 @@ function App() {
     // handle delete todo by the id
     const deleteTodo = todos[index]  // stores the object at the given index in todos that we want to delete
     const newTodoList = todos.filter((todo) => todo.id !== deleteTodo.id); // filters such that todos without the current deleteTodo id are included (deleteTodo object is deleted)
-    persistData(newTodoList); // Saves the updated list to local storage.
+    persistTodoData(newTodoList); // Saves the updated list to local storage.
     setTodos(newTodoList); // Updates the todos state.
 
     // delete the id from the urgentTodosList as well
@@ -72,9 +77,13 @@ function App() {
     if (urgentTodos.some((urgentTodo) => urgentTodo.id === todoToToggle.id)) {
         const newUrgentTodosList = urgentTodos.filter((urgentTodo) => urgentTodo.id !== todoToToggle.id);
         setUrgentTodos(newUrgentTodosList); 
+        persistUrgentTodoData(newUrgentTodosList) // saves the new urgent Todos list to local storage
+
         console.log(urgentTodos)
       } else {
         setUrgentTodos([...urgentTodos, todoToToggle]); 
+        persistUrgentTodoData([...urgentTodos, todoToToggle])
+
       }
     }
 
@@ -87,9 +96,18 @@ function App() {
     if (!localStorage) return; // If localStorage is unavailable, exit early.
 
     let localTodos = localStorage.getItem('todos');
+
     if (localTodos) {
       localTodos = JSON.parse(localTodos).todos; // Parse the stored JSON string to get the todos array.
       setTodos(localTodos); // Set `todos` to the stored list.
+    }
+
+
+    let localUrgentTodos = localStorage.getItem('urgentTodos');
+    if (localUrgentTodos) {
+      localUrgentTodos = JSON.parse(localUrgentTodos).urgentTodos; // Parse the stored JSON string to get the todos array.
+      console.log(localUrgentTodos)
+      setUrgentTodos(localUrgentTodos); // Set `todos` to the stored list.
     }
   }, []); // Runs only once on page load due to the empty dependency array.
 

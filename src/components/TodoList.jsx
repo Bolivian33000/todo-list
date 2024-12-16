@@ -14,7 +14,9 @@ export default function TodoList(props) {
   // Destructure `todos` from props:
   // - `todos`: An array of to-do items passed from the App component.
   console.log(todos);
-  console.log(urgentTodos); // console logs to check if 
+  console.log(urgentTodos); // console logs to check if each array is populated correctly
+
+  
 
   return (
     <ul className="main">
