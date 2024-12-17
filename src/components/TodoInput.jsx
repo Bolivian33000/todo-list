@@ -11,38 +11,29 @@ This component handles adding new to-do items.
 
 export default function TodoInput(props) {
   const { handleAddTodos, todoValue, setTodoValue  } = props; 
+  // destructuring props for use in this component
 
-  // Destructuring props:
-  // - `handleAddTodos`: A function passed from the parent component (App) to handle adding new to-do items.
-
-
-  // State:
-  // - `todoValue`: Holds the current value of the input field.
-  // - `setTodoValue`: Updates `todoValue` whenever the user types in the input field.
-  // - `useState('')`: Initializes the input field as empty.
+  // todoValue holds the current value of the input field
+  // setTodoValue updates todoValue whenever the user types in the input field
+  // useState('') initializes the input field as empty
 
   return (
     <header>
-      {/* Input Field */}
+      {/* Input field */}
       <input 
         value={todoValue} 
-        onChange={(e) => setTodoValue(e.target.value)} 
+        onChange={(e) => setTodoValue(e.target.value)}  // e.target.value is the current value of the input field
+                                                        // e means "event" -- listens for user input
+                                                        // setTodoValue updates todoValue state with current input
 
         placeholder="Enter todo..." 
       />
-      {/* 
-        - `value={todoValue}`: Makes the input a controlled component, tied to the `todoValue` state.
-        - `onChange={(e) => setTodoValue(e.target.value)}`: 
-            - Listens for user input.
-            - `e.target.value`: The current value of the input field.
-            - `setTodoValue`: Updates the `todoValue` state with the current input.
-      */}
 
-      {/* Add Button */}
+      {/* Add button */}
       <button 
         onClick={() => {
-          handleAddTodos(todoValue); // Calls the parent-provided function to add the new to-do.
-          setTodoValue(''); // Clears the input field after submission.
+          handleAddTodos(todoValue); // calls handleAddTodos from App
+          setTodoValue(''); // when todo is added using todoValue, updates todoValue state with empty string
         }}
       >
         Add
@@ -51,13 +42,4 @@ export default function TodoInput(props) {
   );
 }
 
-{/* 
-Notes:
-- `useState` makes `todoValue` a stateful variable, meaning React tracks its changes and re-renders the component when it updates.
-- The `onClick` function on the Add button:
-  - Calls `handleAddTodos` with the current `todoValue` to add the new to-do.
-  - Resets the `todoValue` state to an empty string to clear the input field.
-- Controlled Components: The input field is controlled by React via the `value` and `onChange` props, ensuring the state and UI stay in sync.
-- `export default`: Makes this component available for import in other files (e.g., App.jsx).
-*/}
-
+ç

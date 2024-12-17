@@ -7,73 +7,73 @@ import TodoList from "./components/TodoList";
 // `TodoList`: Component for displaying and managing the list of to-dos.
 
 function App() {
-  // State:
-  // - `todos`: Array of current to-do items.
-  // - `setTodos`: Updates the `todos` state.
-  // - `todoValue`: Holds the value currently being edited or typed into the input field.
-  // - `setTodoValue`: Updates `todoValue`.
+  // todos is an array of current to-do items.
+  // setTodos updates the todos state.
+  // todoValue holds the value currently being edited or typed into the input field
+  // setTodoValue updates todoValue
+  // urgentTodos is an array of todos marked as urgent
+  // setUrgentTodos updates urgentTodos
   const [todos, setTodos] = useState([]); 
   const [todoValue, setTodoValue] = useState('');
   const [urgentTodos, setUrgentTodos] = useState([]);
 
 
 
-  // saves the current list of todos to localStorage.
+  // saves the current list of todos to localStorage
   function persistTodoData(newList) {
     localStorage.setItem('todos', JSON.stringify({ todos: newList }));
   }
 
-  // saves the current list of urgentTodos to localStorage.
+  // saves the current list of urgentTodos to localStorage
   function persistUrgentTodoData(newList) {
     localStorage.setItem('urgentTodos', JSON.stringify({ urgentTodos: newList }));
   }
 
-  // Function: Adds a new to-do item.
+  // adds a new to-do object with id: time since unix epoch, content: entered content by user in the input field
   function handleAddTodos(newTodoContent) {   
     const newTodo = { id: Date.now(), content: newTodoContent }; // new object with unique ID based on time since Unix Epoch (Jan. 1, 1970)
-    const newTodoList = [...todos, newTodo]; // Creates a new list with the new todo appended.
+    const newTodoList = [...todos, newTodo]; // creates a new list with the new todo appended.
     persistTodoData(newTodoList); // Saves the updated list to localStorage.
     setTodos(newTodoList); // Updates the todos state.
   }
 
 
-  // first should have index be the input, and then check for matching id attributes within each object in the 
-  // todos array
+  // state updates are asynchronous
 
-
+  // deletes todo items
   function handleDeleteTodo(index) { 
     // handle delete todo by the id
     const deleteTodo = todos[index]  // stores the object at the given index in todos that we want to delete
-    const newTodoList = todos.filter((todo) => todo.id !== deleteTodo.id); // filters such that todos without the current deleteTodo id are included (deleteTodo object is deleted)
-    persistTodoData(newTodoList); // Saves the updated list to local storage.
-    setTodos(newTodoList); // Updates the todos state.
+    const newTodoList = todos.filter((todo) => todo.id !== deleteTodo.id); // filters such that todos without the current deleteTodo id are included (i.e. deleteTodo object is deleted)
+    persistTodoData(newTodoList); // saves the updated list to local storage
+    setTodos(newTodoList); // updates the todos state
 
-    // delete the id from the urgentTodosList as well
-    const newUrgentTodoList = urgentTodos.filter((urgentTodo) => urgentTodo.id !== deleteTodo.id)
+
+    
+    const newUrgentTodoList = urgentTodos.filter((urgentTodo) => urgentTodo.id !== deleteTodo.id) // deletes id from the urgentTodosList as well
     setUrgentTodos(newUrgentTodoList)
   }
 
 
 
-    // Function: Edits a to-do item.
+    // edits a to-do item.
   function handleEditTodo(index) {
     // handle edit todo by the id
     const editTodo = todos[index] // stores the object at the given index in todos that we want to edit
-    const valueToBeEdited = todos.find((todo) => todo.id === editTodo.id) // matches clicked todo to the existing todo with that id
+    const valueToBeEdited = todos.find((todo) => todo.id === editTodo.id) // matches clicked todo to the existing todo with given id
     // console.log(valueToBeEdited.content)
     // console.log(valueToBeEdited.id)
 
-    // if (!valueToBeEdited) return;
-
-    setTodoValue(valueToBeEdited.content); // Sets the input field to the value to be edited.
-    handleDeleteTodo(index); // Removes the current to-do so it can be edited and re-added.
+    setTodoValue(valueToBeEdited.content); // sets the input field to the value to be edited
+    handleDeleteTodo(index); // removes the current to-do so it can be edited and re-added
   }
 
 
 
+  // marks todos as urgent (by changing background color of todocards to orange)
   function handleUrgentTodo(index) {
     const todoToToggle = todos[index]; 
-    // if the urgentTodo to toggle exists, then filter the urgent todos list to have each urgent Todo not equal to this current todo
+    // if the urgentTodo to toggle exists, then filter the urgent todos list to have each urgent Todo not equal to this current todo (deletes the current urgent todo from urgentTodo list)
     if (urgentTodos.some((urgentTodo) => urgentTodo.id === todoToToggle.id)) {
         const newUrgentTodosList = urgentTodos.filter((urgentTodo) => urgentTodo.id !== todoToToggle.id);
         setUrgentTodos(newUrgentTodosList); 
@@ -81,6 +81,7 @@ function App() {
 
         console.log(urgentTodos)
       } else {
+        // adds untoggled todo object to urgent todos array
         setUrgentTodos([...urgentTodos, todoToToggle]); 
         persistUrgentTodoData([...urgentTodos, todoToToggle])
 
@@ -88,12 +89,10 @@ function App() {
     }
 
   
- // I found that both my edit todo and handle urgent todo buttons are not functioning properly. The add todo button is properly
- // populating the todos array
 
-  // `useEffect`: Loads todos from localStorage on page load (empty dependency array).
+  // useEffect loads todos from localStorage on page load (b/c there is an empty dependency array).
   useEffect(() => {
-    if (!localStorage) return; // If localStorage is unavailable, exit early.
+    if (!localStorage) return; // if localStorage is unavailable, exit early. This could happen if user disables cookies or storage, among other things
 
     let localTodos = localStorage.getItem('todos');
 
@@ -107,18 +106,19 @@ function App() {
     if (localUrgentTodos) {
       localUrgentTodos = JSON.parse(localUrgentTodos).urgentTodos; // Parse the stored JSON string to get the todos array.
       console.log(localUrgentTodos)
-      setUrgentTodos(localUrgentTodos); // Set `todos` to the stored list.
+      setUrgentTodos(localUrgentTodos); // set todos to the stored list.
     }
-  }, []); // Runs only once on page load due to the empty dependency array.
+  }, []); // runs only once on page load b/c we have the second parameter as an empty dependency array.
 
   return (
     <>
-      {/* Passing props to child components:
-          - `handleAddTodos`: Adds new to-do items.
-          - `handleDeleteTodo`: Deletes to-do items.
-          - `handleEditTodo`: Allows editing of to-do items.
-          - `todos`: Current list of to-do items.
-          - `todoValue` and `setTodoValue`: Manage the input field value for adding or editing todos. */}
+      {/* props to make a note of: 
+          - handleAddTodos adds new to-do items.
+          - handleDeleteTodo deletes to-do items.
+          - handleEditTodo allows editing of to-do items.
+          - todos is a current list of to-do objects.
+          - urgentTodos is a current list of urgent todo objects
+          - todoValue and setTodoValue manage the input field value for adding or editing todos. */}
       <TodoInput 
         todoValue={todoValue} 
         setTodoValue={setTodoValue} 
@@ -159,3 +159,8 @@ export default App;
 
 
 // next step -- I must make sure that the urgentTodos are stored to local storage so that the array is not cleared once refreshed
+
+
+
+// Great!! Now the urgentTodo functions is functional. Next time, read some artciles on synchronous vs asynchrnous updates, and
+// potentially add some styling and upload updates to GitHub!
