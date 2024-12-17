@@ -136,31 +136,3 @@ function App() {
 } 
 
 export default App;
-
-
-
-
-{/* Key Notes:
-    - **React State**:
-      - `useState` creates and manages dynamic variables (`todos`, `todoValue`) that trigger re-renders when updated.
-    - **Props**:
-      - Functions like `handleAddTodos`, `handleDeleteTodo`, and `handleEditTodo` are passed as props to child components to manage the to-do list.
-    - **useEffect**:
-      - Runs side effects, like interacting with localStorage, after a component renders or when specified dependencies change.
-      - In this case, loads todos from localStorage when the page reloads (empty dependency array `[]` means it runs only once).
-    - **LocalStorage**:
-      - Used for persisting the to-do list so data isn't lost when the page reloads.
-*/}
-
-
-// Learned something new: If switching between using objects or arrays as children in components, be sure to clear cached data (e.g., localStorage) to prevent data mismatches and rendering errors.
-
-
-
-
-// next step -- I must make sure that the urgentTodos are stored to local storage so that the array is not cleared once refreshed
-
-
-
-// Great!! Now the urgentTodo functions is functional. Next time, read some artciles on synchronous vs asynchrnous updates, and
-// potentially add some styling and upload updates to GitHub!
