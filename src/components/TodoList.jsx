@@ -1,4 +1,4 @@
-// The ES7+ React/Redux/React-Native extension allows us to use "rfc" to create a React functional component
+// The ES7+ React/Redux/React-Native extension allows us to use "rfc" to quickly create a React functional component
 
 import React from 'react';
 import TodoCard from './TodoCard.jsx';

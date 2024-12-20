@@ -41,5 +41,3 @@ export default function TodoInput(props) {
     </header>
   );
 }
-
-ç
